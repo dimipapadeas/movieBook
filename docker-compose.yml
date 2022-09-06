@@ -1,0 +1,20 @@
+version: "3.7"
+networks:
+  movierama:
+    name: movierama
+services:
+  db:
+    image: mariadb:10.3.16
+    ports:
+      - "13306:3306"
+    container_name: movierama-mariadb
+    networks:
+      - movierama
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+volumes:
+  esdata1:
+    driver: local
+    # command: [--max_allowed_packet=1073741824, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci]

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+  <changeSet author="Dimitris Papadeas" context="ddl" id="1">
+    <sql>
+
+--       create database MOVIERAMA;
+--       use MOVIERAMA;
+
+        CREATE TABLE IF NOT EXISTS T_MOVIE
+        (
+        ID  VARCHAR(255) NOT NULL,
+        CREATED_ON DATETIME(6) DEFAULT NULL,
+        CREATED_BY VARCHAR(256) DEFAULT NULL,
+        TITLE VARCHAR(500) NOT NULL,
+        DESCRIPTION VARCHAR(2000) DEFAULT NULL, PRIMARY KEY (ID)
+        );
+
+
+        CREATE TABLE IF NOT EXISTS T_USER
+        (
+            ID  VARCHAR(255) NOT NULL,
+            USER_NAME VARCHAR(255) NOT NULL,
+            PASSWORD VARCHAR(255) NOT NULL,
+            FIRST_NAME VARCHAR(255) NOT NULL,
+            LAST_NAME VARCHAR(255) NOT NULL, PRIMARY KEY (ID)
+        );
+
+        ALTER TABLE T_MOVIE
+        ADD CONSTRAINT FK_MOVIE_CREATED_BY FOREIGN KEY (CREATED_BY) REFERENCES T_USER (ID);
+
+        CREATE TABLE IF NOT EXISTS T_VOTES
+        (
+            ID  VARCHAR(255) NOT NULL,
+            USER VARCHAR(255) NOT NULL,
+            MOVIE VARCHAR(255) NOT NULL,
+            VOTE VARCHAR(255) NOT NULL,
+            PRIMARY KEY (ID)
+        );
+
+        ALTER TABLE T_VOTES
+        ADD CONSTRAINT FK_VOTE_ADDED_BY FOREIGN KEY (USER) REFERENCES T_USER (ID);
+        ALTER TABLE T_VOTES
+        ADD CONSTRAINT FK_VOTE_MOVE FOREIGN KEY (MOVIE) REFERENCES T_MOVIE (ID);
+
+
+        INSERT INTO T_USER (ID, FIRST_NAME, PASSWORD, LAST_NAME, USER_NAME)
+        VALUES ('user1', 'admin', '$2a$10$yYvYMf5shG4v6k4jUM1J0OgNtE5m746Ibo7uQdJqC2V8.wRzrjP6u', 'admin', 'admin');
+        INSERT INTO T_USER (ID, FIRST_NAME, PASSWORD, LAST_NAME, USER_NAME)
+        VALUES ('user2', 'Jhon', '$2a$10$Kw2IhgmfVbqK2xq.T3InYuYXj6PMy/lGktJSzjZ7Sjfg1drLksNFm', 'Doe', 'JDoe');
+        INSERT INTO T_USER (ID, FIRST_NAME, PASSWORD, LAST_NAME, USER_NAME)
+        VALUES ('user3', 'Sheena', '$2a$10$jmHZoWKXV70ZFm9g0Eh7FOrzQkWvt8tTiIjJJSRzo1K44O8vn5V6a', 'Scott', 'SScotts');
+        INSERT INTO T_USER (ID, FIRST_NAME, PASSWORD, LAST_NAME, USER_NAME)
+        VALUES ('user4', 'Lisa', '$2a$10$tvA5qZgFzvA6skCpJsg3N.5ZV1bw2iXSZLB6qOybiCo0xGNCQDWUK', 'Doe', 'LDoe');
+-- test me uuid()
+
+
+    </sql>
+  </changeSet>
+</databaseChangeLog>

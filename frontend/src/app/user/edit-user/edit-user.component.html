@@ -1,0 +1,74 @@
+<div class="mainContent">
+  <form [formGroup]="form" (ngSubmit)="formSubmit(form)">
+
+    <div class="row form-group">
+      <div class="col-sm-1 col-md-1 col-lg-1">
+        <button mat-icon-button title="Save" type="submit">
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+      <div class="col-sm-1 col-md-1 col-lg-1">
+        <button mat-icon-button title="Cancel" routerLink="/user">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-2 col-md-2 col-lg-2">
+        <label for="titleInput">Username</label>
+      </div>
+
+      <div class="row form-group" *ngIf="isDraft">
+        <div class="col-sm-2 col-md-2 col-lg-2">
+          <label for="password">Password</label>
+        </div>
+        <div class="col-sm-4 col-md-4 col-lg-4">
+          <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password">
+          <div *ngIf="form.get('password').errors?.required && form.get('password').dirty" class="text-danger">
+            Field is required
+          </div>
+          <div *ngIf="form.get('password').errors?.minlength && form.get('password').dirty" class="text-danger">
+            The minimum length of field is 3 characters
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6">
+        </div>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <input type="text" class="form-control" id="titleInput" placeholder="Username" formControlName="username">
+        <div *ngIf="form.get('username').errors?.required && form.get('username').dirty" class="text-danger">
+          Field is required
+        </div>
+        <div *ngIf="form.get('username').errors?.minlength && form.get('username').dirty" class="text-danger">
+          The minimum length of field is 3 characters
+        </div>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="col-sm-2 col-md-2 col-lg-2">
+        <label for="fName">Firstname</label>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <input type="text" class="form-control" id="fName" placeholder="Enter Firstname" formControlName="firstName">
+        <div *ngIf="form.get('firstName').errors?.required && form.get('firstName').dirty" class="text-danger">
+          Field is required
+        </div>
+        <div *ngIf="form.get('firstName').errors?.minlength && form.get('firstName').dirty" class="text-danger">
+          The minimum length of field is 3 characters
+        </div>
+      </div>
+      <div class="col-sm-2 col-md-2 col-lg-2">
+        <label for="sName">Lastname</label>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <input type="text" class="form-control" id="sName" placeholder="Enter Lastname" formControlName="lastName">
+        <div *ngIf="form.get('lastName').invalid && form.get('lastName').dirty" class="text-danger">
+          Field is required
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
