@@ -132,7 +132,7 @@ public abstract class BaseService<E extends EntityBase, D extends BaseDto> imple
      * @param content the total content
      * @return a {@code Page} containing the results
      */
-    public <T> Page<T> getPage(int page, int size, List<T> content) { //TODO was static
+    public <T> Page<T> getPage(int page, int size, List<T> content) {
 
         PageRequest pageable = PageRequest.of(page, size);
         long start = Math.min(Math.max(pageable.getOffset(), 0), content.size());

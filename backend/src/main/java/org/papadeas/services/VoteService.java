@@ -32,7 +32,7 @@ public class VoteService extends BaseService<Vote, VoteDto> {
         setRepository(voteRepository);
     }
 
-    public String voteMovie(VoteDto voteDto) {
+    public VoteDto voteMovie(VoteDto voteDto) {
 
         Movie movie = movieService.findResource(voteDto.getMovieId());
         //validation
@@ -40,21 +40,20 @@ public class VoteService extends BaseService<Vote, VoteDto> {
             throw new IllegalStateException("User shall not grade own movies");
         }
 
-        // if vote already exists withdraw it or Change it
+        // if vote already exists withdraw or Change it
         Vote oldVote = voteRepository.findByUserIdAndMovieId(voteDto.getUserId(), voteDto.getMovieId());
         if (Objects.nonNull(oldVote)) {
-            log.warn("Same vote");
+            log.debug("Same vote");
             if (oldVote.getVote().equals(voteDto.getVote())) {
                 //withdraw
                 delete(oldVote.getId());
+                return null;
             } else {
                 //update
                 voteDto.setId(oldVote.getId());
-                update(voteDto);
-                return voteDto.getId();
+                return update(voteDto);
             }
         }
-        VoteDto vote = create(voteDto);
-        return vote.getId();
+        return create(voteDto);
     }
 }

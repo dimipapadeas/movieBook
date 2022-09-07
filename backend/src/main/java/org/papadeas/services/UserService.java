@@ -26,7 +26,6 @@ public class UserService extends BaseService<User, UserDto> implements UserDetai
 
     private final UserMapper mapper;
 
-
     @PostConstruct
     public void onInit() {
         setMapper(mapper);
@@ -62,14 +61,10 @@ public class UserService extends BaseService<User, UserDto> implements UserDetai
      * @return UserDto
      */
     public UserDto updateUser(UserDto dto) {
-        User user = userRepository.findById(dto.getId()).orElse(null);
-//        if (user != null) {
-//            mapper.dtoToEntity(dto, user);
-//        } else {
-        user = mapper.mapToEntity(dto);
+//        User user = userRepository.findById(dto.getId()).orElse(null);
+        User user = mapper.mapToEntity(dto);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(dto.getPassword()));
-//        }
         userRepository.save(user);
         return mapper.mapToDTO(user);
     }
