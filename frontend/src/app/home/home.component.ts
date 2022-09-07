@@ -40,8 +40,7 @@ export class HomeComponent implements OnInit {
   tableSort = '';
   tableSortDir = 'asc';
   filterValues: {
-    description: string;
-    type: string;
+    title: string;
   };
 
   private userID: string;
@@ -59,19 +58,18 @@ export class HomeComponent implements OnInit {
   }
 
   private populateMask() {
-    this.getMovies(this.filterValues.description, this.tableSort, this.tableSortDir, this.dataPageIndex.toString(), this.dataPageSize.toString()).subscribe();
-    // this.getAccountsForUser().subscribe();
+    this.getMovies(this.filterValues.title, this.tableSort, this.tableSortDir, this.dataPageIndex.toString(), this.dataPageSize.toString()).subscribe();
   }
 
   applyFilter(form: FormGroup) {
     this.filterValues = form.value;
-    return this.getMovies(this.filterValues.description, this.tableSort, this.tableSortDir, this.dataPageIndex.toString(), this.dataPageSize.toString()).subscribe();
+    return this.getMovies(this.filterValues.title, this.tableSort, this.tableSortDir, this.dataPageIndex.toString(), this.dataPageSize.toString()).subscribe();
   }
 
   clearFilter() {
     this.createFilterForm();
     this.filterValues = this.form.value;
-    this.getMovies(this.filterValues.description, this.tableSort, this.tableSortDir, this.dataPageIndex.toString(), this.dataPageSize.toString()).subscribe();
+    this.getMovies(this.filterValues.title, this.tableSort, this.tableSortDir, this.dataPageIndex.toString(), this.dataPageSize.toString()).subscribe();
   }
 
   private createFilterForm() {
@@ -84,7 +82,6 @@ export class HomeComponent implements OnInit {
       createdBy: new FormControl(''),
       createdOn: new FormControl(''),
       username: new FormControl(''),
-      accountName: new FormControl(''),
     });
   }
 
@@ -94,7 +91,7 @@ export class HomeComponent implements OnInit {
         const movies: any = response.body.content;
         console.log('movies ... ' + response.body.content);
         this.moviesList = new MatTableDataSource(movies);
-        this.dataLength = +response.body.totalElements; // TODO or totalPages
+        this.dataLength = +response.body.totalElements;
         this.dataPageIndex = +response.body.pageable.pageNumber;
       })
     );
@@ -105,15 +102,13 @@ export class HomeComponent implements OnInit {
     return this.movieService.getAllUsersMovies(sort, direction, page, size, user).pipe(
       tap((response: any) => {
         const movies: any = response.body.content;
-console.log('movies ... ' + response.body.content);
+        console.log('movies ... ' + response.body.content);
         this.moviesList = new MatTableDataSource(movies);
         this.dataLength = +response.body.totalElements;
         this.dataPageIndex = +response.body.pageable.pageNumber;
       })
     );
   }
-
-
 
 
   sortData(event: Sort) {
@@ -124,47 +119,44 @@ console.log('movies ... ' + response.body.content);
       this.tableSort = event.active;
       this.tableSortDir = event.direction;
     }
-    return this.getMovies(this.filterValues.description, this.tableSort, this.tableSortDir, this.dataPageIndex.toString(),
+    return this.getMovies(this.filterValues.title, this.tableSort, this.tableSortDir, this.dataPageIndex.toString(),
       this.dataPageSize.toString()).subscribe();
   }
 
   getServerData(event: PageEvent) {
     this.dataPageIndex = event.pageIndex;
     this.dataPageSize = event.pageSize;
-    return this.getMovies(this.filterValues.description, this.tableSort, this.tableSortDir, this.dataPageIndex.toString(),
+    return this.getMovies(this.filterValues.title, this.tableSort, this.tableSortDir, this.dataPageIndex.toString(),
       this.dataPageSize.toString()).subscribe();
   }
 
-  getServerDataForUSer( user: string) {
+  getServerDataForUser(user: string) {
     return this.getMoviesOfUser(this.tableSort, this.tableSortDir, this.dataPageIndex.toString(),
       this.dataPageSize.toString(), user).subscribe();
   }
 
 
-
   likeMove(id, $event: MouseEvent, like) {
     $event.stopPropagation();
-    console.log('mouse evnt ... ' + MouseEvent);
-    console.log(' move ... ' + id + ' got ' + like);
-    // @ts-ignore
     const vote: Vote = {
       movieId: id,
       userId: sessionStorage.getItem('userId'),
       vote: like
     };
     this.movieService.voteMovie(vote).subscribe(response => {
+      console.log('apanthsh ' + response);
       this.notifyService.showSuccess('Vote added');
-      this.router.navigate(['']);
+      this.clearFilter();
     });
   }
 
-  editTransaction(id, $event: MouseEvent) {
-    $event.stopPropagation();
-    this.router.navigate(['/editTransaction', id]);
-  }
 
   login() {
     this.router.navigate(['/login']);
   }
 
+  addNewUser() {
+    console.log('adding NEW USER');
+    this.router.navigate(['/newUser']);
+  }
 }

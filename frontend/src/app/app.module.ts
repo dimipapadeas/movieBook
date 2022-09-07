@@ -34,9 +34,7 @@ import {MovieComponent} from './movie/movie.component';
     UserComponent,
     EditUserComponent,
     LoginComponent,
-    MovieComponent,
-    // AccountComponent,
-    // TransactionComponent,
+    MovieComponent
   ],
   imports: [
     BrowserModule,
