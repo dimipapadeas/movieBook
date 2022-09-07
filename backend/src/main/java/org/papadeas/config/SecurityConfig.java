@@ -52,8 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resources/**")
                 .antMatchers("/*")
                 .antMatchers("/api/movie/*")
-                .antMatchers("/api/authenticate")
-                .antMatchers("/api/h2-console/**");//TODO
+                .antMatchers("/api/users/*")
+                .antMatchers("/api/authenticate");
     }
 
     @Override
