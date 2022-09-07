@@ -9,12 +9,11 @@
       <mat-card-subtitle>
         <label>Firstname: {{user.firstName}}</label>
         <label>Lastname: {{user.lastName}}</label>
-<!--        <label *ngIf="user.superAdmin">Role: Admin</label>-->
-        <label >Role: User</label>
-<!--        <label>Comments: {{user.comments}}</label>-->
+
       </mat-card-subtitle>
     </mat-card-header>
-    <mat-card-actions>
+<!--    admin user only :-->
+    <mat-card-actions *ngIf="userID==='admin'" >
       <button mat-icon-button (click)="editUser(user.id)" type="button">
         <mat-icon>create</mat-icon>
       </button>

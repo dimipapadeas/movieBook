@@ -14,7 +14,11 @@ export class UserComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) {
   }
 
+  private userID: string;
+
   ngOnInit(): void {
+    this.userID = sessionStorage.getItem('username');
+    console.log('I AM ' + this.userID);
     this.populateMask();
   }
 
