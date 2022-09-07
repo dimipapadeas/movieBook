@@ -52,7 +52,7 @@ public class UserController {
      * @return UserDTO
      */
     @PostMapping
-    public ResponseEntity<UserDto> update(@RequestBody UserDto user) {
+    public ResponseEntity<UserDto> update(@RequestBody UserDto user) throws Exception {
         return ResponseEntity.ok(userService.updateUser(user));
     }
 

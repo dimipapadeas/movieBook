@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -60,14 +61,15 @@ public class UserService extends BaseService<User, UserDto> implements UserDetai
      * @param dto the updated User
      * @return UserDto
      */
-    public UserDto updateUser(UserDto dto) {
-//        User user = userRepository.findById(dto.getId()).orElse(null);
+    public UserDto updateUser(UserDto dto) throws Exception {
+        validateUserName(dto);
         User user = mapper.mapToEntity(dto);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(dto.getPassword()));
         userRepository.save(user);
         return mapper.mapToDTO(user);
     }
+
 
     /**
      * Deletes an User from the Database
@@ -102,4 +104,19 @@ public class UserService extends BaseService<User, UserDto> implements UserDetai
         }
         return new UserPrincipal(user);
     }
+
+    /**
+     * checks during a new registration if a username is already taken
+     * @param dto
+     * @throws Exception
+     */
+    private void validateUserName(UserDto dto) throws Exception {
+        if (Objects.isNull(dto.getId())) {
+            if (userRepository.existsByUsername(dto.getUsername())) {
+                throw new Exception(" User already exists");
+            }
+        }
+    }
+
+
 }

@@ -14,4 +14,13 @@ public interface UserRepository extends GenericRepository<User> {
      * @return User
      */
     User findByUsername(String userName);
+
+
+    /**
+     * checks if a User with username exits
+     *
+     * @param userName the name to find matching User
+     * @return true or false
+     */
+    boolean existsByUsername(String userName);
 }
