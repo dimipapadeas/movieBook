@@ -19,34 +19,18 @@ export class MovieComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
-    this.populateMask();
+    // this.populateMask();
   }
-
-/*  title: string;
-  description: string;
-  userId: string;
- */
 
 
   private createForm() {
     this.form = new FormGroup({
       createdBy: new FormControl(null),
-      title: new FormControl(null, [Validators.required, Validators.minLength(3)]),
-      description: new FormControl(null, [Validators.required, Validators.minLength(3)])
+      title: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      description: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(200)])
     });
   }
 
-  private populateMask() {
-    // this.form.createdBy = sessionStorage.getItem("userId");
-
-  //TODO PARADEIGMA auto gemizei thn maska me adeia data apo thn klhsh ths
-  //  createDraftUser
-    // this.service.createDraftUser().pipe(
-    //   tap((response: any) => {
-    //     this.form.patchValue({...response.body});
-    //   })
-    // ).subscribe();
-  }
 
   formSubmit(form: FormGroup) {
     if (form.valid) {

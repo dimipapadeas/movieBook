@@ -47,16 +47,16 @@ export class MovieService {
       });
   }
 
-  getAllUsersMovies(sort: string, direction: string, page: string, size: string, userId: string) {
+  getAllUsersMovies(sort: string, direction: string, page: string, size: string, userName: string) {
     return this.httpClient.get(
-      environment.apiUrl + '/users', {
+      environment.apiUrl + '/movie/users', {
         observe: 'response',
         params: new HttpParams()
+          .set('userName', userName)
           .set('sort', sort)
           .set('direction', direction)
           .set('page', page)
           .set('size', size)
-          .set('userID', userId)
       });
   }
 
