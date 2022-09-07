@@ -16,20 +16,7 @@ export class AboutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.populateMask();
-  }
 
-  private populateMask() {
-    this.aboutService.getVersion("backssssend").pipe(
-      tap((response: any) => {
-        this.backVersion = response.body.backend;
-      })
-    ).subscribe();
-    this.aboutService.getVersion("frontend").pipe(
-      tap((response: any) => {
-        this.frontVersion = response.bdy.frontend;
-      })
-    ).subscribe();
   }
 
 }
