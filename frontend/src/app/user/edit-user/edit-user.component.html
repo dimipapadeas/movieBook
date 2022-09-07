@@ -13,62 +13,103 @@
         </button>
       </div>
     </div>
+    <mat-accordion class="example-headers-align" multi>
+      <mat-expansion-panel expanded="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            User
+          </mat-panel-title>
+          <mat-panel-description>
+            User information
+          </mat-panel-description>
+        </mat-expansion-panel-header>
 
-    <div class="row form-group">
-      <div class="col-sm-2 col-md-2 col-lg-2">
-        <label for="titleInput">Username</label>
-      </div>
+        <!--      USERNAME-->
+        <div class="row form-group">
+          <div class="col-sm-2 col-md-2 col-lg-2">
+            <label for="username">Username</label>
+          </div>
+          <br/>
+          <div class="col-sm-4 col-md-4 col-lg-4">
+            <input class="form-control" type="text" id="username" placeholder="Username"
+                   formControlName="username">
+            <div *ngIf="form.get('username').errors?.required && form.get('username').dirty" class="text-danger">
+              Field is required
+            </div>
+            <div *ngIf="form.get('username').errors?.minlength && form.get('username').dirty" class="text-danger">
+              The minimum length of field is 3 characters
+            </div>
+            <div *ngIf="form.get('username').errors?.maxlength && form.get('username').dirty" class="text-danger">
+              The maximum length of field is 50 characters
+            </div>
+          </div>
+        </div>
 
-      <div class="row form-group" *ngIf="isDraft">
-        <div class="col-sm-2 col-md-2 col-lg-2">
-          <label for="password">Password</label>
-        </div>
-        <div class="col-sm-4 col-md-4 col-lg-4">
-          <input type="password" class="form-control" id="password" placeholder="Password" formControlName="password">
-          <div *ngIf="form.get('password').errors?.required && form.get('password').dirty" class="text-danger">
-            Field is required
+
+        <!--      passs-->
+        <div class="row form-group">
+          <div class="col-sm-2 col-md-2 col-lg-2">
+            <label for="Password">Password</label>
           </div>
-          <div *ngIf="form.get('password').errors?.minlength && form.get('password').dirty" class="text-danger">
-            The minimum length of field is 3 characters
+          <br/>
+          <div class="col-sm-4 col-md-4 col-lg-4">
+            <input type="password" class="form-control" id="password" placeholder="Password"
+                   formControlName="password">
+            <div *ngIf="form.get('password').errors?.required && form.get('password').dirty" class="text-danger">
+              Field is required
+            </div>
+            <div *ngIf="form.get('password').errors?.minlength && form.get('password').dirty" class="text-danger">
+              The minimum length of field is 3 characters
+            </div>
+            <div *ngIf="form.get('password').errors?.maxlength && form.get('password').dirty" class="text-danger">
+              The maximum length of field is 50 characters
+            </div>
           </div>
         </div>
-        <div class="col-sm-6 col-md-6 col-lg-6">
+
+
+        <div class="row form-group">
+          <div class="col-sm-2 col-md-2 col-lg-2">
+            <label for="Firstname">Firstname</label>
+          </div>
+          <br/>
+          <div class="col-sm-4 col-md-4 col-lg-4">
+            <input class="form-control" type="text" id="firstName" placeholder="Firstname"
+                   formControlName="firstName">
+            <div *ngIf="form.get('firstName').errors?.required && form.get('firstName').dirty" class="text-danger">
+              Field is required
+            </div>
+            <div *ngIf="form.get('firstName').errors?.minlength && form.get('firstName').dirty" class="text-danger">
+              The minimum length of field is 3 characters
+            </div>
+            <div *ngIf="form.get('firstName').errors?.maxlength && form.get('firstName').dirty" class="text-danger">
+              The maximum length of field is 50 characters
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="row form-group">
-      <div class="col-sm-4 col-md-4 col-lg-4">
-        <input type="text" class="form-control" id="titleInput" placeholder="Username" formControlName="username">
-        <div *ngIf="form.get('username').errors?.required && form.get('username').dirty" class="text-danger">
-          Field is required
+
+
+        <div class="row form-group">
+          <div class="col-sm-2 col-md-2 col-lg-2">
+            <label for="Lastname">Lastname</label>
+          </div>
+          <br/>
+          <div class="col-sm-4 col-md-4 col-lg-4">
+            <input class="form-control" type="text" id="lastName" placeholder="Lastname"
+                   formControlName="lastName">
+            <div *ngIf="form.get('lastName').errors?.required && form.get('lastName').dirty" class="text-danger">
+              Field is required
+            </div>
+            <div *ngIf="form.get('lastName').errors?.minlength && form.get('lastName').dirty" class="text-danger">
+              The minimum length of field is 3 characters
+            </div>
+            <div *ngIf="form.get('lastName').errors?.maxlength && form.get('lastName').dirty" class="text-danger">
+              The maximum length of field is 50 characters
+            </div>
+          </div>
         </div>
-        <div *ngIf="form.get('username').errors?.minlength && form.get('username').dirty" class="text-danger">
-          The minimum length of field is 3 characters
-        </div>
-      </div>
-    </div>
-    <div class="row form-group">
-      <div class="col-sm-2 col-md-2 col-lg-2">
-        <label for="fName">Firstname</label>
-      </div>
-      <div class="col-sm-4 col-md-4 col-lg-4">
-        <input type="text" class="form-control" id="fName" placeholder="Enter Firstname" formControlName="firstName">
-        <div *ngIf="form.get('firstName').errors?.required && form.get('firstName').dirty" class="text-danger">
-          Field is required
-        </div>
-        <div *ngIf="form.get('firstName').errors?.minlength && form.get('firstName').dirty" class="text-danger">
-          The minimum length of field is 3 characters
-        </div>
-      </div>
-      <div class="col-sm-2 col-md-2 col-lg-2">
-        <label for="sName">Lastname</label>
-      </div>
-      <div class="col-sm-4 col-md-4 col-lg-4">
-        <input type="text" class="form-control" id="sName" placeholder="Enter Lastname" formControlName="lastName">
-        <div *ngIf="form.get('lastName').invalid && form.get('lastName').dirty" class="text-danger">
-          Field is required
-        </div>
-      </div>
-    </div>
+
+      </mat-expansion-panel>
+    </mat-accordion>
   </form>
 </div>
