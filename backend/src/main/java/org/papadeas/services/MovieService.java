@@ -40,15 +40,34 @@ public class MovieService extends BaseService<Movie, MovieDto> {
     }
 
 
+    /**
+     * Retrieves the move for the given id.
+     *
+     * @param id the movie id
+     * @return the moveDto.
+     */
     @Override
     public MovieDto findById(String id) {
         return super.findById(id);
     }
 
+
+    /**
+     * Retrieves all movies
+     *
+     * @param page      current page
+     * @param size      page size
+     * @param direction ascending or descending
+     * @param property  field to sort on
+     * @param filter    keyword to search with
+     * @return the pageable results
+     */
     public Page<MovieDto> getAllMovies(int page, int size, String direction, String property, String filter) {
-        Predicate predicate = null;
+        Predicate predicate;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), property));
         if (Objects.nonNull(filter) && !filter.isEmpty()) {
-            predicate = Q_MOVIE.title.eq(filter);
+            predicate = Q_MOVIE.title.like("%" + filter + "%");
+            return moviesRepository.findAll(predicate, pageable).map(getMapper()::mapToDTO);
         }
 
         if (property.equals("likes")) {
@@ -57,31 +76,43 @@ public class MovieService extends BaseService<Movie, MovieDto> {
         if (property.equals("dislikes")) {
             return getMovieDtoByLikes(page, size, direction, Comparator.comparing(MovieDto::getDislikes));
         }
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), property));
         return moviesRepository.findAll(pageable).map(getMapper()::mapToDTO);
     }
 
+
+    /**
+     * Returns the moves of a user
+     *
+     * @param page      current page
+     * @param size      page size
+     * @param direction ascending or descending
+     * @param property  field to sort on
+     * @param username  users name
+     * @return the pageable results
+     */
+    public Page<MovieDto> getUsersMovies(int page, int size, String direction, String property, String username) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), property));
+        if (Objects.nonNull(username) && !username.isEmpty()) {
+            Predicate predicate = Q_MOVIE.createdBy.username.eq(username);
+            return moviesRepository.findAll(predicate, pageable).map(getMapper()::mapToDTO);
+        }
+        return Page.empty();
+    }
+
+    /**
+     * @param page      current page
+     * @param size      page size
+     * @param direction ascending or descending
+     * @param comparing compare item, likes or dislikes.
+     * @return the pagable result.
+     */
     private Page<MovieDto> getMovieDtoByLikes(int page, int size, String direction, Comparator<MovieDto> comparing) {
         List<MovieDto> movies = moviesRepository.findAll().stream().map(getMapper()::mapToDTO).collect(Collectors.toList());
-        if (direction.equals("desc")) { // desc
+        if (direction.equals("desc")) {
             movies = movies.stream().sorted(comparing.reversed()).collect(Collectors.toList());
         } else { // asc
             movies = movies.stream().sorted(comparing).collect(Collectors.toList());
         }
         return getPage(page, size, movies);
-    }
-
-
-    //TODO
-    public Page<MovieDto> getUsersMovies(int page, int size, String direction, String property, String userId) {
-        Predicate predicate = null;
-        if (Objects.nonNull(userId)) {
-            predicate = Q_MOVIE.createdBy.id.eq(userId);
-        }
-//        if (Objects.nonNull(predicate)) {
-//            return findPaginated(page, size, direction, property, predicate);
-//        } else {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), property));
-        return getRepository().findAll(pageable).map(getMapper()::mapToDTO);
     }
 }

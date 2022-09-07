@@ -46,13 +46,14 @@ public class MovieController {
         return ResponseEntity.ok(movieService.getAllMovies(page, size, direction, sort, filter));
     }
 
-    @GetMapping("/users/")
-    public ResponseEntity<?> getMoviesOfUser(@PathVariable String userId,
+
+    @GetMapping("/users")
+    public ResponseEntity<?> getMoviesOfUser(@RequestParam String userName,
                                              @RequestParam int page,
                                              @RequestParam int size,
                                              @RequestParam String direction,
                                              @RequestParam(required = false) String property) {
-        return ResponseEntity.ok(movieService.getUsersMovies(page, size, direction, property, userId));
+        return ResponseEntity.ok(movieService.getUsersMovies(page, size, direction, property, userName));
     }
 
 }
