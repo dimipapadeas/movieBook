@@ -13,8 +13,6 @@ public interface GenericRepository<T> extends JpaRepository<T, Long>,
 
     Optional<T> findById(String id);
 
-    boolean existsById(String id);
-
     /**
      * Deletes an object based on its id
      *

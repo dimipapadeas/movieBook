@@ -37,16 +37,16 @@ public abstract class BaseService<E extends EntityBase, D extends BaseDto> imple
     private BaseMapper<E, D> mapper;
 
 
-    private Class<E> type;
-
-    /**
-     * //TODO verify we need it
-     * Basic constructor
-     * @param type
-     */
-    public BaseService(Class<E> type) {
-        this.type = type;
-    }
+//    private Class<E> type;
+//
+//    /**
+//     * //TODO verify we need it
+//     * Basic constructor
+//     * @param type
+//     */
+//    public BaseService(Class<E> type) {
+//        this.type = type;
+//    }
 
     @Override
     public D create(D dto) {
@@ -63,16 +63,6 @@ public abstract class BaseService<E extends EntityBase, D extends BaseDto> imple
     }
 
     @Override
-    public Page<E> findPaginated(int page, int size, String direction, String property, Predicate predicate) {
-        return repository.findAll(predicate, createPageable(page, size, direction, property));
-    }
-
-    @Override
-    public Page<E> findPaginated(int page, int size, String direction, Predicate predicate, String... properties) {
-        return repository.findAll(predicate, createPageable(page, size, direction, properties));
-    }
-
-    @Override
     public D findById(String id) {
         return mapper.mapToDTO(findResource(id));
     }
@@ -83,46 +73,9 @@ public abstract class BaseService<E extends EntityBase, D extends BaseDto> imple
     }
 
     @Override
-    public List<E> findByPredicate(Predicate predicate) {
-        return (List<E>) repository.findAll(predicate);
-    }
-
-    @Override
-    public long countByPredicate(Predicate predicate) {
-        return repository.count(predicate);
-    }
-
-    @Override
     public void delete(String id) {
         repository.delete(id);
     }
-
-    @Override
-    public boolean exists(Predicate predicate) {
-        return repository.exists(predicate);
-    }
-
-
-
-    /**
-     * Creates pageable by page data and parameters.
-     * @param page page num
-     * @param size page size
-     * @param direction asc or desc
-     * @param properties misc properties
-     * @return
-     */
-    protected Pageable createPageable(int page, int size, String direction, String... properties) {
-
-        Pageable pageable;
-        if (Objects.nonNull(direction) && (Objects.nonNull(properties))) {
-            pageable = PageRequest.of(page, size, Sort.Direction.fromString(direction), properties);
-        } else {
-            pageable = PageRequest.of(page, size);
-        }
-        return pageable;
-    }
-
 
     /**
      * Utility method that takes a {@code List} and the paging requirements, and returns them paged

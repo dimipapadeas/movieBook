@@ -6,6 +6,7 @@ import org.papadeas.model.security.UserPrincipal;
 import org.papadeas.services.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,8 +16,11 @@ import java.util.Objects;
 @Transactional
 @RequiredArgsConstructor
 public class AuthenticationService {
+
     private final AuthenticationManager authenticationManager;
+
     private final JwtService jwtService;
+
     private final UserService userService;
 
     /**
@@ -35,8 +39,13 @@ public class AuthenticationService {
         return JwtResponse.builder().jwttoken(token).userId(userDetails.getUserId()).isAdmin(userDetails.isSuperAdmin()).build();
     }
 
+    /**
+     * Clears the security context
+     * @param username users account
+     * @return
+     */
     public JwtResponse logout(String username) {
-        //TODO
+        SecurityContextHolder.clearContext();
         return null;
     }
 }
