@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpErrorResponse, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
-import {catchError} from "rxjs/operators";
-import {throwError} from "rxjs";
-import {NotificationService} from "./notification.service";
+import {HttpErrorResponse, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {catchError} from 'rxjs/operators';
+import {throwError} from 'rxjs';
+import {NotificationService} from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,13 +25,9 @@ export class BasicAuthHtppInterceptorService implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
         let errorMsg = '';
-        if (error.error instanceof ErrorEvent) {
-          errorMsg = `Error: ${error.error.message}`;
-          this.notifyService.showErrorWithTitle(errorMsg, 'Client side error');
-        } else {
-          errorMsg = `Error Code: ${error.status},  Message: ${error.message}`;
-          this.notifyService.showErrorWithTitle(errorMsg, 'Server side error');
-        }
+        errorMsg = `Message: ${error.error.message}`;
+        this.notifyService.showErrorWithTitle(errorMsg, 'Server side error');
+        // }
         return throwError(errorMsg);
       })
     );
