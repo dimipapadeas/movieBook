@@ -8,6 +8,7 @@ import {Router} from '@angular/router';
 import {Movie, MovieService, Vote} from '../services/movie.service';
 import {NotificationService} from '../services/notification.service';
 import {AuthenticationService} from '../services/authentication.service';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -45,12 +46,12 @@ export class HomeComponent implements OnInit {
 
   private userID: string;
   isAdmin = false;
-  isUserLoggedIn = false;
+
+  isUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   ngOnInit() {
     this.userID = sessionStorage.getItem('username');
-    console.log('o user ...' + this.userID);
-    this.isAdmin = (/true/i).test(sessionStorage.getItem('userAdmin')); // TODO na koitaei an einai o admin user
+    this.isAdmin = (/true/i).test(sessionStorage.getItem('userAdmin'));
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.createFilterForm();
     this.filterValues = this.form.value;
@@ -89,7 +90,6 @@ export class HomeComponent implements OnInit {
     return this.movieService.getAllMovies(title, sort, direction, page, size).pipe(
       tap((response: any) => {
         const movies: any = response.body.content;
-        console.log('movies ... ' + response.body.content);
         this.moviesList = new MatTableDataSource(movies);
         this.dataLength = +response.body.totalElements;
         this.dataPageIndex = +response.body.pageable.pageNumber;
@@ -102,7 +102,6 @@ export class HomeComponent implements OnInit {
     return this.movieService.getAllUsersMovies(sort, direction, page, size, user).pipe(
       tap((response: any) => {
         const movies: any = response.body.content;
-        console.log('movies ... ' + response.body.content);
         this.moviesList = new MatTableDataSource(movies);
         this.dataLength = +response.body.totalElements;
         this.dataPageIndex = +response.body.pageable.pageNumber;
@@ -144,7 +143,6 @@ export class HomeComponent implements OnInit {
       vote: like
     };
     this.movieService.voteMovie(vote).subscribe(response => {
-      console.log('apanthsh ' + response);
       this.notifyService.showSuccess('Vote added');
       this.clearFilter();
     });
@@ -156,7 +154,6 @@ export class HomeComponent implements OnInit {
   }
 
   addNewUser() {
-    console.log('adding NEW USER');
     this.router.navigate(['/newUser']);
   }
 }
