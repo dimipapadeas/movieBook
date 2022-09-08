@@ -66,12 +66,12 @@ export class EditUserComponent implements OnInit {
       this.user = form.value;
       this.form.markAsPristine();
       this.service.updateUser(this.user).subscribe(response => {
-        this.notifyService.showSuccess("Save User completed");
+        this.notifyService.showSuccess('Save User completed');
         this.router.navigate(['']);
       });
     } else {
       form.markAsDirty();
-      this.notifyService.showError("Form is invalid");
+      this.notifyService.showError('Form is invalid');
     }
 
   }
