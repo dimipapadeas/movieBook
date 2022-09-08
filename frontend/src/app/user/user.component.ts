@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from "../services/user.service";
-import {Router} from "@angular/router";
-import {tap} from "rxjs/operators";
+import {UserService} from '../services/user.service';
+import {Router} from '@angular/router';
+import {tap} from 'rxjs/operators';
+import {NotificationService} from '../services/notification.service';
 
 @Component({
   selector: 'app-user',
@@ -11,14 +12,13 @@ import {tap} from "rxjs/operators";
 export class UserComponent implements OnInit {
   users = [];
 
-  constructor(private userService: UserService, private router: Router) {
+  constructor(private userService: UserService, private router: Router, private notifyService: NotificationService) {
   }
 
   private userID: string;
 
   ngOnInit(): void {
     this.userID = sessionStorage.getItem('username');
-    console.log('I AM ' + this.userID);
     this.populateMask();
   }
 
@@ -36,7 +36,8 @@ export class UserComponent implements OnInit {
 
   deleteUser(useId) {
     this.userService.deleteUser(useId).subscribe((data: any[]) => {
-      this.router.navigate((['/home']));
+      this.notifyService.showSuccess('User deleted');
+      this.router.navigate((['/user']));
     });
   }
 
