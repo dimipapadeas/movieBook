@@ -13,13 +13,9 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'movie', component: MovieComponent, canActivate: [AuthGaurdService]},
+  {path: 'newUser', component: EditUserComponent},
   {path: 'user', component: UserComponent, canActivate: [AuthGaurdService]},
-  // {path: 'newAccount', component: AccountComponent, canActivate: [AuthGaurdService]},
-  {path: 'newUser', component: EditUserComponent, canActivate: [AuthGaurdService]},
   {path: 'editUser/:id', component: EditUserComponent, canActivate: [AuthGaurdService]},
-  // {path: 'viewAccount/:id', component: AccountComponent, canActivate: [AuthGaurdService]},
-  // {path: 'addTransaction/:accountId', component: TransactionComponent, canActivate: [AuthGaurdService]},
-  // {path: 'editTransaction/:transactionId', component: TransactionComponent, canActivate: [AuthGaurdService]},
   {path: 'about', component: AboutComponent},
 ];
 

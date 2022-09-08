@@ -3,11 +3,11 @@
     {{title}}
   </h1>
   <button mat-button routerLink="/home">Home</button>
-  <button *ngIf="isloggedIn()" mat-button routerLink="/movie">Add new Movie</button>
-  <button *ngIf="isloggedIn()" mat-button [matMenuTriggerFor]="menuAdmin">Administration</button>
+  <button *ngIf="isloggedIn()| async" mat-button routerLink="/movie">Add new Movie</button>
+  <button *ngIf="isloggedIn()| async" mat-button [matMenuTriggerFor]="menuAdmin">Administration</button>
   <button mat-button routerLink="/about">About</button>
 
-  <button mat-button [matMenuTriggerFor]="menuUser" *ngIf="isloggedIn()">
+  <button mat-button [matMenuTriggerFor]="menuUser" *ngIf="isloggedIn() | async">
     <mat-icon>supervisor_account</mat-icon>
     {{username}}
   </button>

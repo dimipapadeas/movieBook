@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {AuthenticationService} from "./services/authentication.service";
-import {Router} from "@angular/router";
-import {map} from "rxjs/operators";
-import {NotificationService} from "./services/notification.service";
+import {AuthenticationService} from './services/authentication.service';
+import {Router} from '@angular/router';
+import {map} from 'rxjs/operators';
+import {NotificationService} from './services/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +24,7 @@ export class AppComponent {
         sessionStorage.removeItem("userId");
         sessionStorage.removeItem("userAdmin");
         this.notifyService.showInfo("Logged Out");
-        this.router.navigate(['home']);
+        this.router.navigate(['/home']);
       })
     ).subscribe();
   }
