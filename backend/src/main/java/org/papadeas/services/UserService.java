@@ -3,11 +3,11 @@ package org.papadeas.services;
 
 import lombok.RequiredArgsConstructor;
 import org.papadeas.dto.UserDto;
+import org.papadeas.exception.AppGenericException;
 import org.papadeas.mappers.UserMapper;
 import org.papadeas.model.User;
 import org.papadeas.model.security.UserPrincipal;
 import org.papadeas.repositories.UserRepository;
-import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -61,7 +61,7 @@ public class UserService extends BaseService<User, UserDto> implements UserDetai
      * @param dto the updated User
      * @return UserDto
      */
-    public UserDto updateUser(UserDto dto) throws Exception {
+    public UserDto updateUser(UserDto dto) throws AppGenericException {
         validateUserName(dto);
         User user = mapper.mapToEntity(dto);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -72,7 +72,7 @@ public class UserService extends BaseService<User, UserDto> implements UserDetai
 
 
     /**
-     * Deletes an User from the Database
+     * Deletes a User from the Database
      *
      * @param id the id of the User to delete
      */
@@ -106,17 +106,16 @@ public class UserService extends BaseService<User, UserDto> implements UserDetai
     }
 
     /**
-     * checks during a new registration if a username is already taken
-     * @param dto
-     * @throws Exception
+     * During a new registration checks if a username is already taken
+     * @param dto new user
+     * @throws AppGenericException that user already exists
      */
-    private void validateUserName(UserDto dto) throws Exception {
+    private void validateUserName(UserDto dto) throws AppGenericException {
         if (Objects.isNull(dto.getId())) {
             if (userRepository.existsByUsername(dto.getUsername())) {
-                throw new Exception(" User already exists");
+                throw new AppGenericException("User already exists");
             }
         }
     }
-
 
 }

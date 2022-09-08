@@ -1,6 +1,5 @@
 package org.papadeas.model.security;
 
-
 import org.papadeas.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
