@@ -5,13 +5,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
-import org.mapstruct.Named;
 import org.papadeas.dto.MovieDto;
 import org.papadeas.enums.Reaction;
 import org.papadeas.model.Movie;
-import org.papadeas.model.User;
 import org.papadeas.services.UserService;
-import org.springframework.data.domain.Page;
 
 import java.util.Objects;
 
@@ -21,9 +18,6 @@ public interface MovieMapper extends BaseMapper<Movie, MovieDto> {
     @Mapping(target = "createdOn", ignore = true)
     @Mapping(target = "createdBy", source = "createdBy")
     Movie mapToEntity(MovieDto dto);
-
-//    @Named("movieFromId")
-//    Movie mapFromId(String id);
 
 
     @Override

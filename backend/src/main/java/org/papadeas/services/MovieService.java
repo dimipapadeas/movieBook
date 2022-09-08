@@ -2,7 +2,9 @@ package org.papadeas.services;
 
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.IterableUtils;
 import org.papadeas.dto.MovieDto;
+import org.papadeas.exception.AppGenericException;
 import org.papadeas.mappers.MovieMapper;
 import org.papadeas.model.Movie;
 import org.papadeas.model.QMovie;
@@ -25,7 +27,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MovieService extends BaseService<Movie, MovieDto> {
 
-
     private final MoviesRepository moviesRepository;
 
     private final MovieMapper mapper;
@@ -39,6 +40,33 @@ public class MovieService extends BaseService<Movie, MovieDto> {
         setRepository(moviesRepository);
     }
 
+
+    /**
+     * Creates a movie entry
+     *
+     * @param dto the DTO to be mapped to the created entity
+     * @return the created movie
+     * @throws AppGenericException in case the movie title already exists
+     */
+    @Override
+    public MovieDto create(MovieDto dto) throws AppGenericException {
+        validateMovieName(dto);
+        return super.create(dto);
+    }
+
+    /**
+     * checks during a new registration if a username is already taken
+     *
+     * @param dto the submitted new movie
+     * @throws AppGenericException that the movie already exists.
+     */
+    private void validateMovieName(MovieDto dto) throws AppGenericException {
+        if (Objects.isNull(dto.getId())) {
+            if (moviesRepository.existsByTitle(dto.getTitle())) {
+                throw new AppGenericException("Movie title already exists");
+            }
+        }
+    }
 
     /**
      * Retrieves the move for the given id.
@@ -63,20 +91,11 @@ public class MovieService extends BaseService<Movie, MovieDto> {
      * @return the pageable results
      */
     public Page<MovieDto> getAllMovies(int page, int size, String direction, String property, String filter) {
-        Predicate predicate;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), property));
+        Predicate predicate = null;
         if (Objects.nonNull(filter) && !filter.isEmpty()) {
             predicate = Q_MOVIE.title.like("%" + filter + "%");
-            return moviesRepository.findAll(predicate, pageable).map(getMapper()::mapToDTO);
         }
-
-        if (property.equals("likes")) {
-            return getMovieDtoByLikes(page, size, direction, Comparator.comparing(MovieDto::getLikes));
-        }
-        if (property.equals("dislikes")) {
-            return getMovieDtoByLikes(page, size, direction, Comparator.comparing(MovieDto::getDislikes));
-        }
-        return moviesRepository.findAll(pageable).map(getMapper()::mapToDTO);
+        return findMovies(page, size, direction, property, predicate);
     }
 
 
@@ -90,29 +109,84 @@ public class MovieService extends BaseService<Movie, MovieDto> {
      * @param username  users name
      * @return the pageable results
      */
-    public Page<MovieDto> getUsersMovies(int page, int size, String direction, String property, String username) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), property));
+    public Page<MovieDto> getUsersMovies(String property, int page, int size, String direction, String username) {
         if (Objects.nonNull(username) && !username.isEmpty()) {
             Predicate predicate = Q_MOVIE.createdBy.username.eq(username);
-            return moviesRepository.findAll(predicate, pageable).map(getMapper()::mapToDTO);
+
+            return findMovies(page, size, direction, property, predicate);
         }
         return Page.empty();
     }
+
+
+    /**
+     * Returns the moves of a user
+     *
+     * @param page      current page
+     * @param size      page size
+     * @param direction ascending or descending
+     * @param property  field to sort on
+     * @param username  users name
+     * @return the pageable results
+     */
 
     /**
      * @param page      current page
      * @param size      page size
      * @param direction ascending or descending
-     * @param comparing compare item, likes or dislikes.
-     * @return the pagable result.
+     * @param property  field to sort on
+     * @param predicate for cases of search with keyword
+     * @return
      */
-    private Page<MovieDto> getMovieDtoByLikes(int page, int size, String direction, Comparator<MovieDto> comparing) {
-        List<MovieDto> movies = moviesRepository.findAll().stream().map(getMapper()::mapToDTO).collect(Collectors.toList());
+    private Page<MovieDto> findMovies(int page, int size, String direction, String property, Predicate predicate) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), property));
+
+        if (property.equals("likes")) {
+            return getMovieDtoOrderedByLikes(predicate, page, size, direction, Comparator.comparing(MovieDto::getLikes));
+        }
+        if (property.equals("dislikes")) {
+            return getMovieDtoOrderedByLikes(predicate, page, size, direction, Comparator.comparing(MovieDto::getDislikes));
+        }
+        if (Objects.nonNull(predicate)) {
+            return moviesRepository.findAll(predicate, pageable).map(getMapper()::mapToDTO);
+        }
+        return moviesRepository.findAll(pageable).map(getMapper()::mapToDTO);
+    }
+
+
+    /**
+     * In case of like sorting we have to sort in app level.
+     *
+     * @param predicate for cases of search with keyword
+     * @param page      current page
+     * @param size      page size
+     * @param direction ascending or descending
+     * @param comparing compare item, likes or dislikes.
+     * @return the pageable result.
+     */
+    private Page<MovieDto> getMovieDtoOrderedByLikes(Predicate predicate, int page, int size, String direction,
+                                                     Comparator<MovieDto> comparing) {
+        List<MovieDto> movies = getMovieDtos(predicate);
         if (direction.equals("desc")) {
             movies = movies.stream().sorted(comparing.reversed()).collect(Collectors.toList());
         } else { // asc
             movies = movies.stream().sorted(comparing).collect(Collectors.toList());
         }
         return getPage(page, size, movies);
+    }
+
+    /**
+     * Retrieves the movies in cases of likes/hates sorting.
+     * with or without keyword.
+     *
+     * @param predicate if there is a keyword.
+     * @return the list of movies.
+     */
+    private List<MovieDto> getMovieDtos(Predicate predicate) {
+        return (Objects.nonNull(predicate)
+                ? IterableUtils.toList(moviesRepository.findAll(predicate))
+                .stream().map(getMapper()::mapToDTO).collect(Collectors.toList())
+                : moviesRepository.findAll().stream().map(getMapper()::mapToDTO).collect(Collectors.toList()));
     }
 }

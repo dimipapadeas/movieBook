@@ -3,12 +3,10 @@ package org.papadeas.controllers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.papadeas.dto.MovieDto;
-import org.papadeas.enums.Reaction;
 import org.papadeas.services.MovieService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +34,14 @@ public class MovieController {
         return ResponseEntity.ok(movieService.create(newMovie));
     }
 
+    /**
+     * @param sort      field to sort on
+     * @param page      current page
+     * @param size      page size
+     * @param direction ascending or descending
+     * @param filter    keyword to search with
+     * @return the pageable results
+     */
     @GetMapping("/all")
     public ResponseEntity<?> getMoviesByDate(
             @RequestParam(name = "sort", defaultValue = "title") String sort,
@@ -47,13 +53,22 @@ public class MovieController {
     }
 
 
+    /**
+     * Retrieves the movies for the given username
+     *
+     * @param userName      user's name
+     * @param sort      field to sort on
+     * @param page      current page
+     * @param size      page size
+     * @param direction ascending or descending
+     * @return the pageable results
+     */
     @GetMapping("/users")
     public ResponseEntity<?> getMoviesOfUser(@RequestParam String userName,
+                                             @RequestParam(name = "sort", defaultValue = "title") String sort,
                                              @RequestParam int page,
                                              @RequestParam int size,
-                                             @RequestParam String direction,
-                                             @RequestParam(required = false) String property) {
-        return ResponseEntity.ok(movieService.getUsersMovies(page, size, direction, property, userName));
+                                             @RequestParam String direction) {
+        return ResponseEntity.ok(movieService.getUsersMovies(sort, page, size, direction, userName));
     }
-
 }
