@@ -26,7 +26,7 @@ public interface VoteMapper extends BaseMapper<Vote, VoteDto> {
      * Maps a Vote entity to a VoteDto
      *
      * @param entity the source entity
-     * @return
+     * @return the mapped Dto
      */
     @Override
     @Mapping(source = "user.id", target = "userId")

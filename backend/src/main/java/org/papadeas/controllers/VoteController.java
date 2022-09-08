@@ -21,6 +21,12 @@ public class VoteController {
 
     private final VoteService voteService;
 
+    /**
+     * Votes movie
+     *
+     * @param voteDto given dto with movie and user ids among with the preference
+     * @return the updated VoteDto
+     */
     @PostMapping
     public ResponseEntity<?> voteMovie(@RequestBody VoteDto voteDto) {
         return ResponseEntity.ok(voteService.voteMovie(voteDto));

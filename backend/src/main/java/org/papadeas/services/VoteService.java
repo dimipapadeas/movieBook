@@ -32,13 +32,15 @@ public class VoteService extends BaseService<Vote, VoteDto> {
         setRepository(voteRepository);
     }
 
+    /**
+     * Registers a vote from a user
+     * @param voteDto the vote information
+     * @return the updated vote info
+     */
     public VoteDto voteMovie(VoteDto voteDto) {
 
         Movie movie = movieService.findResource(voteDto.getMovieId());
-        //validation
-        if (movie.getCreatedBy().getId().equals(voteDto.getUserId())) {
-            throw new IllegalStateException("User shall not grade own movies");
-        }
+        validateVote(voteDto, movie);
 
         // if vote already exists withdraw or Change it
         Vote oldVote = voteRepository.findByUserIdAndMovieId(voteDto.getUserId(), voteDto.getMovieId());
@@ -55,5 +57,16 @@ public class VoteService extends BaseService<Vote, VoteDto> {
             }
         }
         return create(voteDto);
+    }
+
+    /**
+     * validates if the user is able to vote a specific movie
+     * @param voteDto submitted vote
+     * @param movie mote to be rated
+     */
+    private void validateVote(VoteDto voteDto, Movie movie) {
+        if (movie.getCreatedBy().getId().equals(voteDto.getUserId())) {
+            throw new IllegalStateException("Users shall not grade own movies");
+        }
     }
 }
