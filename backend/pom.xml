@@ -14,7 +14,7 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <spring.boot.version>2.7.3</spring.boot.version>
+        <spring.boot.version>2.6.11</spring.boot.version>
         <org.projectlombok.version>1.18.24</org.projectlombok.version>
         <org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
         <frontend-bundle-dir>${project.parent.basedir}/frontend/dist/frontend/</frontend-bundle-dir>
@@ -71,13 +71,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!--Third Party-->
-<!--        <dependency>-->
-<!--            <groupId>com.h2database</groupId>-->
-<!--            <artifactId>h2</artifactId>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
-
         <!-- Database -->
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
@@ -104,20 +97,6 @@
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>com.querydsl</groupId>-->
-<!--            <artifactId>querydsl-apt</artifactId>-->
-<!--&lt;!&ndash;            <version>${querydsl.version}</version>&ndash;&gt;-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>com.querydsl</groupId>-->
-<!--            <artifactId>querydsl-jpa</artifactId>-->
-<!--&lt;!&ndash;            <version>${querydsl.version}</version>&ndash;&gt;-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-core</artifactId>
@@ -130,15 +109,12 @@
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${org.projectlombok.version}</version>
             <scope>provided</scope>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -215,6 +191,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
                 <configuration>
                     <mainClass>${start-class}</mainClass>
                 </configuration>
