@@ -22,10 +22,10 @@
           <button mat-raised-button title="Clear Filter" (click)="clearFilter()">Clear</button>
         </form>
         <form class="form-inline md-form mr-auto mb-4">
-          <button mat-raised-button color="primary" *ngIf="!isUserLoggedIn"
+          <button mat-raised-button color="primary" *ngIf="!(isUserLoggedIn |async)"
                   title="Log in " (click)="login()">Log in
           </button>
-          <button mat-raised-button color="primary" *ngIf="!isUserLoggedIn"
+          <button mat-raised-button color="primary" *ngIf="!(isUserLoggedIn |async)"
                   title="Add user " (click)="addNewUser()">Add new User
           </button>
         </form>
@@ -75,11 +75,11 @@
           <ng-container matColumnDef="voteBtns">
             <th mat-header-cell *matHeaderCellDef> action</th>
             <td mat-cell *matCellDef="let element">
-              <button mat-icon-button title="like" *ngIf="element.createdBy !== userID  && isUserLoggedIn"
+              <button mat-icon-button title="like" *ngIf="element.createdBy !== userID  && isUserLoggedIn |async"
                       (click)="likeMove(element.id,$event, '1')">
                 <mat-icon>thumb_up</mat-icon>
               </button>
-              <button mat-icon-button title="dislike" *ngIf="element.createdBy !== userID && isUserLoggedIn"
+              <button mat-icon-button title="dislike" *ngIf="element.createdBy !== userID && isUserLoggedIn| async"
                       (click)="likeMove(element.id,$event,'2')">
                 <mat-icon>thumb_down</mat-icon>
               </button>
