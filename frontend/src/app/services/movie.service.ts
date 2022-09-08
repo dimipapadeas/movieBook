@@ -55,7 +55,7 @@ export class MovieService {
           .set('userName', userName)
           .set('sort', sort)
           .set('direction', direction)
-          .set('page', page)
+          .set('page', 0)
           .set('size', size)
       });
   }
@@ -65,7 +65,6 @@ export class MovieService {
   }
 
   voteMovie(vote: Vote): Observable<Vote> {
-    console.log('calling the vote....' + vote);
     return this.httpClient.post<Vote>(`${environment.apiUrl + '/vote'}`, vote);
   }
 
