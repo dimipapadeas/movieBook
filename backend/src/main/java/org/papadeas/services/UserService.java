@@ -2,6 +2,7 @@ package org.papadeas.services;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.papadeas.dto.UserDto;
 import org.papadeas.exception.AppGenericException;
 import org.papadeas.mappers.UserMapper;
@@ -18,6 +19,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -67,6 +69,7 @@ public class UserService extends BaseService<User, UserDto> implements UserDetai
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(dto.getPassword()));
         userRepository.save(user);
+        log.info("User {}, data was updated", user.getUsername());
         return mapper.mapToDTO(user);
     }
 
@@ -78,6 +81,7 @@ public class UserService extends BaseService<User, UserDto> implements UserDetai
      */
     public void deleteUser(String id) {
         userRepository.delete(id);
+        log.info("User with id :{} was deleted", id);
     }
 
     /**
@@ -107,6 +111,7 @@ public class UserService extends BaseService<User, UserDto> implements UserDetai
 
     /**
      * During a new registration checks if a username is already taken
+     *
      * @param dto new user
      * @throws AppGenericException that user already exists
      */

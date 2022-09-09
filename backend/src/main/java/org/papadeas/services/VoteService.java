@@ -45,7 +45,7 @@ public class VoteService extends BaseService<Vote, VoteDto> {
         // if vote already exists withdraw or Change it
         Vote oldVote = voteRepository.findByUserIdAndMovieId(voteDto.getUserId(), voteDto.getMovieId());
         if (Objects.nonNull(oldVote)) {
-            log.debug("Same vote");
+            log.debug("Same vote detected");
             if (oldVote.getVote().equals(voteDto.getVote())) {
                 //withdraw
                 delete(oldVote.getId());
@@ -56,6 +56,7 @@ public class VoteService extends BaseService<Vote, VoteDto> {
                 return update(voteDto);
             }
         }
+        log.info("Vote added");
         return create(voteDto);
     }
 

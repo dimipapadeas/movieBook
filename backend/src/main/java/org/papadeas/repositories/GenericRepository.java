@@ -7,7 +7,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import java.util.Optional;
 
 @NoRepositoryBean
-public interface GenericRepository<T> extends JpaRepository<T, Long>,
+public interface GenericRepository<T> extends JpaRepository<T, String>,
         QuerydslPredicateExecutor<T> {
 
 
