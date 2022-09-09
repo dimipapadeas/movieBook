@@ -1,6 +1,5 @@
 package org.papadeas.services;
 
-import com.querydsl.core.types.Predicate;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -12,8 +11,6 @@ import org.papadeas.services.interfaces.ServiceBase;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -36,17 +33,6 @@ public abstract class BaseService<E extends EntityBase, D extends BaseDto> imple
      */
     private BaseMapper<E, D> mapper;
 
-
-//    private Class<E> type;
-//
-//    /**
-//     * //TODO verify we need it
-//     * Basic constructor
-//     * @param type
-//     */
-//    public BaseService(Class<E> type) {
-//        this.type = type;
-//    }
 
     @Override
     public D create(D dto) {

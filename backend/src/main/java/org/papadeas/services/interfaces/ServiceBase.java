@@ -8,7 +8,7 @@ import org.papadeas.model.EntityBase;
  * An interface describing the basic functionality of app services
  *
  * @param <E> an app entity
- * @param <D> a app DTO
+ * @param <D> an app DTO
  */
 public interface ServiceBase<E extends EntityBase, D extends BaseDto> {
 
@@ -46,6 +46,7 @@ public interface ServiceBase<E extends EntityBase, D extends BaseDto> {
      * @throws Exception when the entity is not present in the DB
      */
     E findResource(String id);
+
 
     /**
      * Searches and deletes a record from the DB based on the given ID
