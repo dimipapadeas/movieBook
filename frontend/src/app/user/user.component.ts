@@ -15,7 +15,7 @@ export class UserComponent implements OnInit {
   constructor(private userService: UserService, private router: Router, private notifyService: NotificationService) {
   }
 
-  private userID: string;
+  userID: string;
 
   ngOnInit(): void {
     this.userID = sessionStorage.getItem('username');

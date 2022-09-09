@@ -1,19 +1,19 @@
 <div class="mainContent">
-  <button mat-icon-button (click)="createUser()" type="button" title="Add User">
+
+  <button mat-icon-button *ngIf="userID==='admin'" (click)=" createUser()
+  " type="button" title="Add User">
     <mat-icon>add_circle_outline</mat-icon>
   </button>
-
   <mat-card *ngFor="let user of users" style="margin-top:10px;">
     <mat-card-header>
       <mat-card-title>Username: {{user.username}}</mat-card-title>
       <mat-card-subtitle>
         <label>Firstname: {{user.firstName}}</label>
         <label>Lastname: {{user.lastName}}</label>
-
       </mat-card-subtitle>
     </mat-card-header>
-<!--    admin user only :-->
-    <mat-card-actions *ngIf="userID==='admin'" >
+    <!--    admin user only :-->
+    <mat-card-actions *ngIf="userID==='admin'">
       <button mat-icon-button (click)="editUser(user.id)" type="button">
         <mat-icon>create</mat-icon>
       </button>
