@@ -30,6 +30,11 @@ public class JwtAuthenticationController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * Removes authenticated user from security context
+     * @param username username of user account
+     * @return ok Response
+     */
     @PostMapping("/api/logout")
     public ResponseEntity<?> logout(@RequestBody String username) {
         JwtResponse response = authenticationService.logout(username);
