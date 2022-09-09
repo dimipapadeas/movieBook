@@ -7,8 +7,5 @@ import org.papadeas.model.User;
 @Mapper(componentModel = "spring")
 public interface UserMapper extends BaseMapper<User, UserDto>{
 
-//    String mapToId(User entity);
-//    @Named("userFromId")
-//    User mapFromId(String id);
 
 }

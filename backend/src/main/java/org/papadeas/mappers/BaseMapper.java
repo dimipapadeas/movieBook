@@ -2,7 +2,6 @@ package org.papadeas.mappers;
 
 import org.papadeas.dto.BaseDto;
 import org.papadeas.model.EntityBase;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -39,12 +38,5 @@ public interface BaseMapper<E extends EntityBase, D extends BaseDto> {
      */
     E mapToEntity(D dto);
 
-//    /**
-//     * Maps a list of DTO's to a list of entities.
-//     *
-//     * @param dto the source DTO's list
-//     * @return the mapped list of entities
-//     */
-//    List<E> mapToEntity(Iterable<D> dto);
 
 }
