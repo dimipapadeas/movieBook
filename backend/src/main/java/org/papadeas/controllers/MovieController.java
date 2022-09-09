@@ -35,11 +35,12 @@ public class MovieController {
     }
 
     /**
-     * @param sort      field to sort on
-     * @param page      current page
-     * @param size      page size
-     * @param direction ascending or descending
-     * @param filter    keyword to search with
+     * @param sort       field to sort on
+     * @param page       current page
+     * @param size       page size
+     * @param direction  ascending or descending
+     * @param filter     keyword to search with
+     * @param userFilter filter movies by user
      * @return the pageable results
      */
     @GetMapping("/all")
@@ -48,27 +49,9 @@ public class MovieController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "5") int size,
             @RequestParam(name = "direction", defaultValue = "asc") String direction,
-            @RequestParam(required = false) String filter) {
-        return ResponseEntity.ok(movieService.getAllMovies(page, size, direction, sort, filter));
+            @RequestParam(required = false) String filter,
+            @RequestParam(required = false) String userFilter) {
+        return ResponseEntity.ok(movieService.getAllMovies(page, size, direction, sort, filter, userFilter));
     }
 
-
-    /**
-     * Retrieves the movies for the given username
-     *
-     * @param userName      user's name
-     * @param sort      field to sort on
-     * @param page      current page
-     * @param size      page size
-     * @param direction ascending or descending
-     * @return the pageable results
-     */
-    @GetMapping("/users")
-    public ResponseEntity<?> getMoviesOfUser(@RequestParam String userName,
-                                             @RequestParam(name = "sort", defaultValue = "title") String sort,
-                                             @RequestParam int page,
-                                             @RequestParam int size,
-                                             @RequestParam String direction) {
-        return ResponseEntity.ok(movieService.getUsersMovies(sort, page, size, direction, userName));
-    }
 }

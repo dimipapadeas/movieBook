@@ -34,7 +34,7 @@ export class MovieService {
   constructor(private httpClient: HttpClient) {
   }
 
- getAllMovies(title: string, sort: string, direction: string, page: string, size: string) {
+ getAllMovies(title: string, sort: string, direction: string, page: string, size: string, userFilter: string) {
     return this.httpClient.get(
       environment.apiUrl + '/movie/all', {
         observe: 'response',
@@ -43,22 +43,23 @@ export class MovieService {
           .set('size', size)
           .set('direction', direction)
           .set('filter', title)
+          .set('userFilter', userFilter)
           .set('sort', sort)
       });
   }
 
-  getAllUsersMovies(sort: string, direction: string, page: string, size: string, userName: string) {
-    return this.httpClient.get(
-      environment.apiUrl + '/movie/users', {
-        observe: 'response',
-        params: new HttpParams()
-          .set('userName', userName)
-          .set('sort', sort)
-          .set('direction', direction)
-          .set('page', 0)
-          .set('size', size)
-      });
-  }
+  // getAllUsersMovies(sort: string, direction: string, page: string, size: string, userName: string) {
+  //   return this.httpClient.get(
+  //     environment.apiUrl + '/movie/users', {
+  //       observe: 'response',
+  //       params: new HttpParams()
+  //         .set('userName', userName)
+  //         .set('sort', sort)
+  //         .set('direction', direction)
+  //         .set('page', 0)
+  //         .set('size', size)
+  //     });
+  // }
 
   addMovie(movie: MovieBase): Observable<MovieBase> {
     return this.httpClient.post<MovieBase>(`${environment.apiUrl + '/movie'}`, movie);

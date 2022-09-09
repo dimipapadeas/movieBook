@@ -44,14 +44,17 @@ export class HomeComponent implements OnInit {
     title: string;
   };
 
+  private userFilter = '';
   private userID: string;
   isAdmin = false;
+
 
   isUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   ngOnInit() {
     this.userID = sessionStorage.getItem('username');
     this.isAdmin = (/true/i).test(sessionStorage.getItem('userAdmin'));
+    this.userFilter = '';
     this.isUserLoggedIn = this.authenticationService.isUserLoggedIn();
     this.createFilterForm();
     this.filterValues = this.form.value;
@@ -59,24 +62,27 @@ export class HomeComponent implements OnInit {
   }
 
   private populateMask() {
-    this.getMovies(this.filterValues.title, this.tableSort, this.tableSortDir, this.dataPageIndex.toString(), this.dataPageSize.toString()).subscribe();
+    this.getMovies(this.filterValues.title, this.tableSort, this.tableSortDir, this.dataPageIndex.toString(),
+      this.dataPageSize.toString()).subscribe();
   }
 
   applyFilter(form: FormGroup) {
     this.filterValues = form.value;
-    return this.getMovies(this.filterValues.title, this.tableSort, this.tableSortDir, this.dataPageIndex.toString(), this.dataPageSize.toString()).subscribe();
+    this.userFilter = '';
+    return this.getMovies(this.filterValues.title, this.tableSort, this.tableSortDir, this.dataPageIndex.toString(),
+      this.dataPageSize.toString()).subscribe();
   }
 
   clearFilter() {
+    this.userFilter = '';
     this.createFilterForm();
     this.filterValues = this.form.value;
-    this.getMovies(this.filterValues.title, this.tableSort, this.tableSortDir, this.dataPageIndex.toString(), this.dataPageSize.toString()).subscribe();
+    this.getMovies(this.filterValues.title, this.tableSort, this.tableSortDir, this.dataPageIndex.toString(),
+      this.dataPageSize.toString()).subscribe();
   }
 
   private createFilterForm() {
     this.form = new FormGroup({
-      // id: new FormControl(''),
-      amount: new FormControl(''),
       date: new FormControl(''),
       description: new FormControl(''),
       title: new FormControl(''),
@@ -87,7 +93,7 @@ export class HomeComponent implements OnInit {
   }
 
   private getMovies(title: string, sort: string, direction: string, page: string, size: string) {
-    return this.movieService.getAllMovies(title, sort, direction, page, size).pipe(
+    return this.movieService.getAllMovies(title, sort, direction, page, size, this.userFilter).pipe(
       tap((response: any) => {
         const movies: any = response.body.content;
         this.moviesList = new MatTableDataSource(movies);
@@ -96,10 +102,10 @@ export class HomeComponent implements OnInit {
       })
     );
   }
-
 
   private getMoviesOfUser(sort: string, direction: string, page: string, size: string, user: string) {
-    return this.movieService.getAllUsersMovies(sort, direction, page, size, user).pipe(
+    this.userFilter = user;
+    return this.movieService.getAllMovies(null, sort, direction, page, size, user).pipe(
       tap((response: any) => {
         const movies: any = response.body.content;
         this.moviesList = new MatTableDataSource(movies);
@@ -108,7 +114,6 @@ export class HomeComponent implements OnInit {
       })
     );
   }
-
 
   sortData(event: Sort) {
     if (event.direction === '') {
@@ -130,6 +135,7 @@ export class HomeComponent implements OnInit {
   }
 
   getServerDataForUser(user: string) {
+    this.userFilter = user;
     return this.getMoviesOfUser(this.tableSort, this.tableSortDir, this.dataPageIndex.toString(),
       this.dataPageSize.toString(), user).subscribe();
   }

@@ -40,7 +40,6 @@ public class MovieService extends BaseService<Movie, MovieDto> {
         setRepository(moviesRepository);
     }
 
-
     /**
      * Creates a movie entry
      *
@@ -88,47 +87,20 @@ public class MovieService extends BaseService<Movie, MovieDto> {
      * @param direction ascending or descending
      * @param property  field to sort on
      * @param filter    keyword to search with
+     * @param username  username to enable user's movies search
      * @return the pageable results
      */
-    public Page<MovieDto> getAllMovies(int page, int size, String direction, String property, String filter) {
+    public Page<MovieDto> getAllMovies(int page, int size, String direction, String property, String filter, String username) {
         Predicate predicate = null;
         if (Objects.nonNull(filter) && !filter.isEmpty()) {
             predicate = Q_MOVIE.title.like("%" + filter + "%");
         }
+        if (Objects.nonNull(username) && !username.isEmpty()) {
+            predicate = Q_MOVIE.createdBy.username.eq(username);
+        }
         return findMovies(page, size, direction, property, predicate);
     }
 
-
-    /**
-     * Returns the moves of a user
-     *
-     * @param page      current page
-     * @param size      page size
-     * @param direction ascending or descending
-     * @param property  field to sort on
-     * @param username  users name
-     * @return the pageable results
-     */
-    public Page<MovieDto> getUsersMovies(String property, int page, int size, String direction, String username) {
-        if (Objects.nonNull(username) && !username.isEmpty()) {
-            Predicate predicate = Q_MOVIE.createdBy.username.eq(username);
-
-            return findMovies(page, size, direction, property, predicate);
-        }
-        return Page.empty();
-    }
-
-
-    /**
-     * Returns the moves of a user
-     *
-     * @param page      current page
-     * @param size      page size
-     * @param direction ascending or descending
-     * @param property  field to sort on
-     * @param username  users name
-     * @return the pageable results
-     */
 
     /**
      * @param page      current page
@@ -136,7 +108,7 @@ public class MovieService extends BaseService<Movie, MovieDto> {
      * @param direction ascending or descending
      * @param property  field to sort on
      * @param predicate for cases of search with keyword
-     * @return
+     * @return pageable result
      */
     private Page<MovieDto> findMovies(int page, int size, String direction, String property, Predicate predicate) {
 
