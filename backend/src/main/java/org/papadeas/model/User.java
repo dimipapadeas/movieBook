@@ -35,4 +35,7 @@ public class User extends EntityBase {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vote> votes = new java.util.ArrayList<>();
 
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Movie> movies = new java.util.ArrayList<>();
+
 }

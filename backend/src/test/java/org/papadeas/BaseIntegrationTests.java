@@ -38,7 +38,7 @@ public class BaseIntegrationTests {
     MoviesRepository moviesRepository;
 
 
-    protected User user = new User("movieTester", "pass", "movieTester", "movieTester", new ArrayList<>());
+    protected User user = new User("movieTester", "pass", "movieTester", "movieTester", new ArrayList<>(), new ArrayList<>());
 
     @BeforeEach
     public void setup() {

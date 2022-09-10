@@ -27,7 +27,7 @@ public class Movie extends EntityBase {
     @CreationTimestamp
     Instant createdOn;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "CREATED_BY", updatable = false)
     @CreatedBy
     private User createdBy;
@@ -40,4 +40,6 @@ public class Movie extends EntityBase {
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vote> votes = new java.util.ArrayList<>();
+
+
 }
