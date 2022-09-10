@@ -21,15 +21,15 @@ hates.
 
 Checkout from repo:
 
->git clone https://github.com/dimipapadeas/movieRama.git
+    git clone https://github.com/dimipapadeas/movieRama.git
 
 Navigate to project root folder:
 
-> cd movieRama
+    cd movieRama
 
 Build project:
 
->`mvn clean install -DskipTests`
+  `mvn clean install -DskipTests`
 or
 `mvn clean install`  (to build with tests)
 
@@ -53,6 +53,12 @@ Terminate the server
 
     Ctrl+ C
 
+#### Demos :
+
+[demo1.webm](https://user-images.githubusercontent.com/20535822/189482995-e7bfb815-17d8-40e3-b67d-fe1973b8de3d.webm)
+
+
+[demo2.webm](https://user-images.githubusercontent.com/20535822/189483001-4658fe9d-9908-4147-b933-7803bcbc8612.webm)
 
  Author: D. Papadeas
 
