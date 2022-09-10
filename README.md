@@ -21,15 +21,15 @@ hates.
 
 Checkout from repo:
 
->git clone https://github.com/dimipapadeas/movieRama.git
+    git clone https://github.com/dimipapadeas/movieRama.git
 
 Navigate to project root folder:
 
-> cd movieRama
+    cd movieRama
 
 Build project:
 
->`mvn clean install -DskipTests`
+  `mvn clean install -DskipTests`
 or
 `mvn clean install`  (to build with tests)
 
