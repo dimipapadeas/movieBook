@@ -13,7 +13,7 @@ export class AppComponent {
   constructor(private loginservice: AuthenticationService, private router: Router, private notifyService: NotificationService) {
   }
 
-  title = 'MovieRama';
+  title = 'MovieBook';
   username = '';
 
   logout() {

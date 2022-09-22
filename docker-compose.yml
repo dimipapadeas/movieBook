@@ -1,15 +1,15 @@
 version: "3.7"
 networks:
-  movierama:
-    name: movierama
+  moviebook:
+    name: moviebook
 services:
   db:
     image: mariadb:10.3.16
     ports:
       - "13306:3306"
-    container_name: movierama-mariadb
+    container_name: moviebook-mariadb
     networks:
-      - movierama
+      - moviebook
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
