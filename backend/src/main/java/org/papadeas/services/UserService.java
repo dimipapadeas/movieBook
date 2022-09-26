@@ -9,6 +9,7 @@ import org.papadeas.mappers.UserMapper;
 import org.papadeas.model.User;
 import org.papadeas.model.security.UserPrincipal;
 import org.papadeas.repositories.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -123,4 +124,13 @@ public class UserService extends BaseService<User, UserDto> implements UserDetai
         }
     }
 
+    /**
+     * Retrieves the loggedIn user id.
+     *
+     * @return the logged-in user's id
+     */
+    public String getLoggedInUsersId() {
+        String loggedInUser = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return loadUserByUsername(loggedInUser).getUserId();
+    }
 }

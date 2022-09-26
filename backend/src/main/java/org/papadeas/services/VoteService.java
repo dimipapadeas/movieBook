@@ -26,6 +26,8 @@ public class VoteService extends BaseService<Vote, VoteDto> {
 
     private final MovieService movieService;
 
+    private final UserService userService;
+
     @PostConstruct
     public void onInit() {
         setMapper(voteMapper);
@@ -34,14 +36,13 @@ public class VoteService extends BaseService<Vote, VoteDto> {
 
     /**
      * Registers a vote from a user
+     *
      * @param voteDto the vote information
      * @return the updated vote info
      */
     public VoteDto voteMovie(VoteDto voteDto) {
 
-        Movie movie = movieService.findResource(voteDto.getMovieId());
-        validateVote(voteDto, movie);
-
+        validateVoter(voteDto);
         // if vote already exists withdraw or Change it
         Vote oldVote = voteRepository.findByUserIdAndMovieId(voteDto.getUserId(), voteDto.getMovieId());
         if (Objects.nonNull(oldVote)) {
@@ -61,12 +62,14 @@ public class VoteService extends BaseService<Vote, VoteDto> {
     }
 
     /**
-     * validates if the user is able to vote a specific movie
+     * Validates if the user is able to vote a specific movie
+     *
      * @param voteDto submitted vote
-     * @param movie mote to be rated
      */
-    private void validateVote(VoteDto voteDto, Movie movie) {
-        if (movie.getCreatedBy().getId().equals(voteDto.getUserId())) {
+    private void validateVoter(VoteDto voteDto) {
+        Movie movie = movieService.findResource(voteDto.getMovieId());
+        String loggedUserId = userService.getLoggedInUsersId();
+        if (movie.getCreatedBy().getId().equals(loggedUserId)) {
             throw new IllegalStateException("Users shall not grade own movies");
         }
     }
