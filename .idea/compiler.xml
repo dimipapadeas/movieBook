@@ -9,7 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="frontend" />
       </profile>
-      <profile name="Annotation profile for MovieRama" enabled="true">
+      <profile name="Annotation profile for MovieBook" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
