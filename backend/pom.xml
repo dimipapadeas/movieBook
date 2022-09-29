@@ -11,10 +11,12 @@
 
   <artifactId>backend</artifactId>
 
+  <name>backend</name>
+
   <properties>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
-    <spring.boot.version>2.6.11</spring.boot.version>
+    <spring.boot.version>2.7.4</spring.boot.version>
     <org.projectlombok.version>1.18.24</org.projectlombok.version>
     <org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
     <frontend-bundle-dir>${project.parent.basedir}/frontend/dist/frontend/</frontend-bundle-dir>
