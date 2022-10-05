@@ -2,7 +2,8 @@
 MovieBook is a portfolio app.
 
 
-[![Dependency Review](https://github.com/dimipapadeas/movieBook/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/dimipapadeas/movieBook/actions/workflows/dependency-review.yml)
+[![CodeQL](https://github.com/dimipapadeas/movieBook/actions/workflows/codeql.yml/badge.svg)](https://github.com/dimipapadeas/movieBook/actions/workflows/codeql.yml)
+[![CI](https://github.com/dimipapadeas/movieBook/actions/workflows/maven.yml/badge.svg)](https://github.com/dimipapadeas/movieBook/actions/workflows/maven.yml)
 
 ## The MovieBook
 MovieBook is a social sharing platform where users can share their favorite movies. Each movie has a title
