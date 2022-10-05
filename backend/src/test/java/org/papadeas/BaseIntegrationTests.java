@@ -1,8 +1,11 @@
 package org.papadeas;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.runner.RunWith;
 import org.papadeas.model.User;
 import org.papadeas.repositories.MoviesRepository;
 import org.papadeas.repositories.UserRepository;
@@ -12,22 +15,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.testcontainers.containers.MariaDBContainer;
+import org.testcontainers.utility.DockerImageName;
 
-import java.util.ArrayList;
-
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-//@RunWith(SpringRunner.class)
 
 @SpringBootTest(classes = ApplicationBootstrap.class, webEnvironment = WebEnvironment.RANDOM_PORT, properties = {
-    "spring.datasource.url=jdbc:tc:mariadb:10.3.16:///?TC_MY_CNF=mariadb_conf_override",
-    "spring.datasource.driver-class-name=org.testcontainers.jdbc.ContainerDatabaseDriver"
+    "spring.datasource.driver-class-name=org.testcontainers.jdbc.ContainerDatabaseDriver",
+    "spring.datasource.url=jdbc:tc:mariadb:10.3:///",
+    "spring.jpa.database-platform=org.hibernate.dialect.MariaDB103Dialect",
+
 })
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -56,6 +58,20 @@ public class BaseIntegrationTests {
     mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
   }
 
+  private static final MariaDBContainer mariadb;
+
+
+  static {
+    mariadb = new MariaDBContainer<>(DockerImageName.parse("mariadb:10.5.5"));
+    mariadb.start();
+  }
+
+  @DynamicPropertySource
+  static void properties(DynamicPropertyRegistry registry) {
+    registry.add("spring.datasource.url", mariadb::getJdbcUrl);
+    registry.add("spring.datasource.username", mariadb::getUsername);
+    registry.add("spring.datasource.password", mariadb::getPassword);
+  }
 
   /**
    * Utility method
